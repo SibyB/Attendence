@@ -10,6 +10,8 @@ import MySidebar from './components/MySidebar';
 import Navbar from './components/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
+import FirstPage from './components/firstPage';
+// import Calender from './components/Calender';
 
 
 
@@ -18,7 +20,7 @@ const App = () => {
     <div>
       <BrowserRouter>
       <Routes>
-      <Route path='/' element={[<Navbar/>,<MySidebar/>]}/>
+      <Route path='/' element={[<Navbar/>,<MySidebar/>,<FirstPage/>]}/>
       <Route path='/login' element={<Login/>}/>
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword/>}/>
@@ -30,6 +32,7 @@ const App = () => {
 }
 
 export default App
+
 
 
 
