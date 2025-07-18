@@ -6,13 +6,16 @@
   /* margin: auto; */
   background-color: #fdfdfd;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 8px rgba(234, 28, 28, 0.1); */
+  box-shadow: 0 2px 8px hsla(0, 76%, 26%, 0.628);
 
-  max-width: 600px;  /* try 600px or any desired value */
+  max-width: 700px;  /* try 600px or any desired value */
   margin: 0 auto;     /* center horizontally */
   border: 1px solid #ddd;
   padding: 10px;
-  margin-right: 20px;
+  margin-right: 50pxpx;
+
+  align-items: center;
 }
 
 .calendar-heading {

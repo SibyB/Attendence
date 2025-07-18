@@ -1,130 +1,10 @@
-// import React, { useState, useRef, useEffect } from 'react';
-// import FullCalendar from '@fullcalendar/react';
-// import dayGridPlugin from '@fullcalendar/daygrid';
-// import interactionPlugin from '@fullcalendar/interaction';
-// import EventModal from './EventModal';
-// import './first.css';
-
-// const FirstPage = () => {
-//   const calendarRef = useRef(null);
-//   const today = new Date();
-
-//   const [month, setMonth] = useState(today.getMonth());
-//   const [year, setYear] = useState(today.getFullYear());
-//   const [events, setEvents] = useState([]);
-//   const [showModal, setShowModal] = useState(false);
-//   const [selectedDate, setSelectedDate] = useState('');
-
-//   useEffect(() => {
-//     fetch('http://localhost:5050/events')
-//       .then(res => res.json())
-//       .then(setEvents)
-//       .catch(console.error);
-//   }, []);
-
-//   const changeDate = (monthDelta = 0, yearDelta = 0) => {
-//     const api = calendarRef.current?.getApi();
-//     if (!api) return;
-//     const newMonth = month + monthDelta;
-//     const newYear = year + yearDelta;
-//     const date = new Date(newYear, newMonth, 1);
-//     api.gotoDate(date);
-//     setYear(date.getFullYear());
-//     setMonth(date.getMonth());
-//   };
-
-//   const onDropdownChange = (m, y) => changeDate(m - month, y - year);
-
-//   const handleDateClick = info => {
-//     setSelectedDate(info.dateStr);
-//     setShowModal(true);
-//   };
-
-//   const handleSaveEvent = newEvent => {
-//     fetch('http://localhost:5050/events', {
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify(newEvent),
-//     })
-//       .then(res => res.json())
-//       .then(savedEvent => {
-//         setEvents(prev => [...prev, savedEvent]);
-//         setShowModal(false);
-//       })
-//       .catch(console.error);
-//   };
-
-//   const monthNames = [
-//     'January','February','March','April','May','June',
-//     'July','August','September','October','November','December'
-//   ];
-
-//   return (
-//     <div className="calendar-container">
-//       <div style={{ marginBottom: 8, display: 'flex', alignItems: 'center', gap: 4, marginLeft:'140px'}}>
-//         {/* Month arrows */}
-//         <button onClick={() => changeDate(-1, 0)}>←</button>
-//         <select value={month} onChange={e => onDropdownChange(+e.target.value, year)}>
-//           {monthNames.map((m, i) => <option key={i} value={i}>{m}</option>)}
-//         </select>
-//         <button onClick={() => changeDate(1, 0)}>→</button>
-
-//         {/* Spacer */}
-//         <div style={{ width: 20 }} />
-
-//         {/* Year arrows */}
-//         <button onClick={() => changeDate(0, -1)}>←</button>
-//         <select value={year} onChange={e => onDropdownChange(month, +e.target.value)}>
-//           {Array.from({ length: 201 }, (_, i) => 1900 + i).map(y => (
-//             <option key={y} value={y}>{y}</option>
-//           ))}
-//         </select>
-//         <button onClick={() => changeDate(0, 1)}>→</button>
-//       </div>
-
-//       <FullCalendar
-//         ref={calendarRef}
-//         plugins={[dayGridPlugin, interactionPlugin]}
-//         initialView="dayGridMonth"
-//         headerToolbar={false}
-//         dateClick={handleDateClick}
-//         events={events}
-//         height={400}
-//         datesSet={info => {
-//           const d = info.start;
-//           setYear(d.getFullYear());
-//           setMonth(d.getMonth());
-//         }}
-//       />
-
-//       <EventModal
-//         isOpen={showModal}
-//         selectedDate={selectedDate}
-//         onSave={handleSaveEvent}
-//         onClose={() => setShowModal(false)}
-//       />
-//     </div>
-//   );
-// };
-
-// export default FirstPage;
-
-
-
-
-
-
-
-
-
-
-
-
+// firstPage.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import EventModal from './EventModal';
+import Holidays from 'date-holidays';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './first.css';
 
@@ -135,15 +15,25 @@ const firstPage = () => {
   const [month, setMonth] = useState(today.getMonth());
   const [year, setYear] = useState(today.getFullYear());
   const [events, setEvents] = useState([]);
+  const [holidays, setHolidays] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
+  const [selectedHoliday, setSelectedHoliday] = useState(null);
 
+  // Load app events
   useEffect(() => {
     fetch('http://localhost:5050/events')
       .then(res => res.json())
       .then(setEvents)
       .catch(console.error);
   }, []);
+
+  // Load holiday data whenever year changes
+  useEffect(() => {
+    const hd = new Holidays('IN'); // replace 'IN' with your country code
+    const hdList = hd.getHolidays(year);
+    setHolidays(hdList || []);
+  }, [year]);
 
   const changeDate = (mDelta = 0, yDelta = 0) => {
     const api = calendarRef.current?.getApi();
@@ -157,10 +47,39 @@ const firstPage = () => {
   const onDropdownChange = (newMonth, newYear) =>
     changeDate(newMonth - month, newYear - year);
 
-  const handleDateClick = (info) => {
-    setSelectedDate(info.dateStr);
-    setShowModal(true);
-  };
+  // const handleDateClick = (info) => {
+  //   setSelectedDate(info.dateStr);
+  //   const holiday = holidays.find(h => h.date === info.dateStr);
+  //   setSelectedHoliday(holiday || null);
+  //   setShowModal(true);
+  // };
+
+
+  const handleDateClick = async info => {
+  setSelectedDate(info.dateStr);
+  setSelectedHoliday(null);
+
+  try {
+    const [year, month, day] = info.dateStr.split('-');
+    const res = await axios.get('https://calendarific.com/api/v2/holidays', {
+      params: {
+        api_key: YOUR_CALENDARIFIC_KEY,
+        country: 'IN',         // change if needed
+        year,
+        month,
+        day
+      }
+    });
+    const list = res.data.response.holidays;
+    setSelectedHoliday(list.length ? list[0] : null);
+  } catch (err) {
+    console.error(err);
+    setSelectedHoliday(null);
+  }
+
+  setShowModal(true);
+};
+
 
   const handleSaveEvent = (newEvent) => {
     fetch('http://localhost:5050/events', {
@@ -176,6 +95,15 @@ const firstPage = () => {
       .catch(console.error);
   };
 
+  // Transform holidays into calendar events for visual display
+  const holidayEvents = holidays.map(h => ({
+    id: `hol-${h.date}`,
+    title: h.name,
+    start: h.date,
+    allDay: true,
+    backgroundColor: '#fde',
+  }));
+
   const monthNames = [
     'January','February','March','April','May','June',
     'July','August','September','October','November','December'
@@ -184,6 +112,7 @@ const firstPage = () => {
   return (
     <div className="container calendar-container">
       <div className="row mb-3 justify-content-center">
+        {/* Month selector */}
         <div className="col-auto d-flex align-items-center">
           <button className="btn btn-outline-secondary btn-sm" onClick={() => changeDate(-1, 0)}>←</button>
           <select
@@ -195,7 +124,7 @@ const firstPage = () => {
           </select>
           <button className="btn btn-outline-secondary btn-sm" onClick={() => changeDate(1, 0)}>→</button>
         </div>
-
+        {/* Year selector */}
         <div className="col-auto d-flex align-items-center">
           <button className="btn btn-outline-secondary btn-sm" onClick={() => changeDate(0, -1)}>←</button>
           <select
@@ -203,32 +132,35 @@ const firstPage = () => {
             value={year}
             onChange={e => onDropdownChange(month, +e.target.value)}
           >
-            {Array.from({ length: 121 }, (_, i) => 2000 + i).map(y => (
-              <option key={y} value={y}>{y}</option>
-            ))}
+            {Array.from({ length: 121 }, (_, i) => 2000 + i)
+              .map(y => <option key={y} value={y}>{y}</option>)}
           </select>
           <button className="btn btn-outline-secondary btn-sm" onClick={() => changeDate(0, 1)}>→</button>
         </div>
       </div>
 
       <FullCalendar
+        events={events}
+  dateClick={handleDateClick}
         ref={calendarRef}
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         headerToolbar={false}
-        dateClick={handleDateClick}
-        events={events}
-        height={400}
+        // dateClick={handleDateClick}
+        // events={[...events, ...holidayEvents]}
+        height={450}
         datesSet={info => {
           const d = info.start;
           setYear(d.getFullYear());
           setMonth(d.getMonth());
         }}
+        
       />
 
       <EventModal
         isOpen={showModal}
         selectedDate={selectedDate}
+        selectedHoliday={selectedHoliday}
         onSave={handleSaveEvent}
         onClose={() => setShowModal(false)}
       />
@@ -237,3 +169,4 @@ const firstPage = () => {
 };
 
 export default firstPage;
+

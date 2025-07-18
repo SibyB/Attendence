@@ -11,6 +11,7 @@ import Navbar from './components/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
 import FirstPage from './components/firstPage';
+import Employee from './components/Employee';
 // import Calender from './components/Calender';
 
 
@@ -25,6 +26,7 @@ const App = () => {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword/>}/>
       <Route path="/sidebar" element={<MySidebar/>}/>
+      <Route path="/employee" element={<Employee/>}/>
     </Routes>
     </BrowserRouter>
     </div>
