@@ -12,6 +12,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
 import FirstPage from './components/firstPage';
 import Employee from './components/Employee';
+import AddEmployeeForm from './components/AddEmployeeForm';
+import AddFormPage from './components/AddFormPage';
 // import Calender from './components/Calender';
 
 
@@ -27,6 +29,8 @@ const App = () => {
       <Route path="/reset-password" element={<ResetPassword/>}/>
       <Route path="/sidebar" element={<MySidebar/>}/>
       <Route path="/employee" element={<Employee/>}/>
+      <Route path="/addform" element={<AddEmployeeForm/>}/>
+      <Route path='/page' element={<AddFormPage/>}/>
     </Routes>
     </BrowserRouter>
     </div>
