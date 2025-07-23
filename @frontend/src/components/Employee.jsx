@@ -18,11 +18,13 @@ function Employee() {
 
   return (
     <div className="container mt-4">
-      <h2>Employee List</h2>
+      <div className='d-flex gap-5'>
+      <h2 >Employee List</h2>
      
       <Link to="/page">
       <Button variant="primary">Add Employee</Button>
       </Link>
+      </div>
 
       <Table striped bordered hover responsive className="mt-3">
         <thead>
