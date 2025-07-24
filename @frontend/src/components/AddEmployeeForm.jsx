@@ -91,7 +91,9 @@ function AddEmployeeForm({ onSave, onCancel }) {
           <Form.Group className="mb-3">
             <Form.Label>Phone</Form.Label>
             <Form.Control
+            
               {...register('phone', {
+                
                 required: 'Phone number is required',
                 pattern: {
                   value: /^[0-9]{10}$/,
@@ -199,16 +201,7 @@ function AddEmployeeForm({ onSave, onCancel }) {
           </Form.Group>
         </Col>
 
-        <Col md={6}>
-          <Form.Group className="mb-3">
-             <Form.Label>Department</Form.Label>
-            <Form.Control
-              {...register('dept', { required: 'Department is required' })}
-              placeholder="Enter department"
-            />
-            {errors.dept && <small className="text-danger">{errors.dept.message}</small>}
-          </Form.Group>
-        </Col>
+       
 
         <Col md={6}>
           <Form.Group className="mb-3">
@@ -313,7 +306,227 @@ function AddEmployeeForm({ onSave, onCancel }) {
             {errors.Branch && <small className="text-danger">{errors.Branch.message}</small>}
           </Form.Group>
         </Col>
+
+         <Col md={6}>
+          <Form.Group className="mb-3">
+             <Form.Label>Department</Form.Label>
+            <Form.Control
+              {...register('dept', { required: 'Department is required' })}
+              placeholder="Enter department"
+            />
+            {errors.dept && <small className="text-danger">{errors.dept.message}</small>}
+          </Form.Group>
+        </Col>
+
+       <Col md={6}>
+  <Form.Group className="mb-3">
+    <Form.Label>Shift</Form.Label>
+    <Form.Select
+      {...register('shift', { required: 'Shift is required' })}
+      defaultValue=""
+    >
+      <option value="" disabled>Select shift</option>
+      <option value="Morning">Morning</option>
+      <option value="Evening">Evening</option>
+      <option value="Night">Night</option>
+    </Form.Select>
+    {errors.shift && <small className="text-danger">{errors.shift.message}</small>}
+  </Form.Group>
+</Col>
+
+
+
+<Col md={6}>
+  <Form.Group className="mb-3">
+    <Form.Label>Designation</Form.Label>
+    <Form.Select
+      {...register('designation', { required: 'Designation is required' })}
+      defaultValue=""
+    >
+      <option value="" disabled>Select designation</option>
+      <option value="Manager">Manager</option>
+      <option value="Team Lead">Team Lead</option>
+      <option value="Developer">Developer</option>
+      <option value="Designer">Designer</option>
+      <option value="Intern">Intern</option>
+    </Form.Select>
+    {errors.designation && <small className="text-danger">{errors.designation.message}</small>}
+  </Form.Group>
+</Col>
+
+<Col md={6}>
+  <Form.Group className="mb-3">
+    <Form.Label>Date of Joining</Form.Label>
+    <Form.Control
+      type="date"
+      {...register('dateOfJoining', { required: 'Date of Joining is required' })}
+    />
+    {errors.dateOfJoining && <small className="text-danger">{errors.dateOfJoining.message}</small>}
+  </Form.Group>
+</Col>
+
+<Col md={6}>
+  <Form.Group className="mb-3">
+    <Form.Label>Date of Resignation</Form.Label>
+    <Form.Control
+      type="date"
+      {...register('dateOfResignation', { required: 'Date of Resignation is required' })}
+    />
+    {errors.dateOfResignation && (
+      <small className="text-danger">{errors.dateOfResignation.message}</small>
+    )}
+  </Form.Group>
+</Col>
+
+<Col md={6}>
+  <Form.Group className="mb-3">
+    <Form.Label>Current Salary</Form.Label>
+    <Form.Control
+      type="number"
+      placeholder="Enter current salary"
+      {...register('currentSalary', {
+        required: 'Current Salary is required',
+        min: { value: 0, message: 'Salary must be a positive number' },
+      })}
+    />
+    {errors.currentSalary && (
+      <small className="text-danger">{errors.currentSalary.message}</small>
+    )}
+  </Form.Group>
+</Col>
+
+<Col md={6}>
+  <Form.Group className="mb-3">
+    <Form.Label>Employee Status</Form.Label>
+    <Form.Select
+      {...register('status', { required: 'Employee status is required' })}
+    >
+      <option value="">Select status</option>
+      <option value="active">Active</option>
+      <option value="inactive">Inactive</option>
+    </Form.Select>
+    {errors.status && (
+      <small className="text-danger">{errors.status.message}</small>
+    )}
+  </Form.Group>
+</Col>
+
+<Col md={12}>
+  <Form.Group className="mb-3">
+    <Form.Label>Skills</Form.Label>
+    <Form.Control
+      type="text"
+      placeholder="Enter skills (e.g. HTML, CSS, JavaScript)"
+      {...register('skills', { required: 'At least one skill is required' })}
+    />
+    {errors.skills && (
+      <small className="text-danger">{errors.skills.message}</small>
+    )}
+  </Form.Group>
+</Col>
+
       </Row>
+
+
+
+ <h5 className="mt-4">Bank Details</h5>
+      <Row>
+        
+        <Col md={6}>
+  <Form.Group className="mb-3">
+    <Form.Label>Bank Name</Form.Label>
+    <Form.Control
+      type="text"
+      placeholder="Enter bank name"
+      {...register('bankName', { required: 'Bank name is required' })}
+    />
+    {errors.bankName && (
+      <small className="text-danger">{errors.bankName.message}</small>
+    )}
+  </Form.Group>
+</Col>
+
+
+        <Col md={6}>
+  <Form.Group className="mb-3">
+    <Form.Label>Account Holder Name</Form.Label>
+    <Form.Control
+      type="text"
+      placeholder="Enter account holder name"
+      {...register('accountHolderName', {
+        required: 'Account holder name is required',
+        minLength: {
+          value: 3,
+          message: 'Name must be at least 3 characters'
+        }
+      })}
+    />
+    {errors.accountHolderName && (
+      <small className="text-danger">{errors.accountHolderName.message}</small>
+    )}
+  </Form.Group>
+</Col>
+
+
+<Col md={6}>
+  <Form.Group className="mb-3">
+    <Form.Label>Account Number</Form.Label>
+    <Form.Control
+      type="text"
+      placeholder="Enter account number"
+      {...register('accountNumber', {
+        required: 'Account number is required',
+        pattern: {
+          value: /^[0-9]{9,18}$/,
+          message: 'Enter a valid account number (9–18 digits)'
+        }
+      })}
+    />
+    {errors.accountNumber && (
+      <small className="text-danger">{errors.accountNumber.message}</small>
+    )}
+  </Form.Group>
+</Col>
+
+
+
+         <Col md={6}>
+  <Form.Group className="mb-3">
+    <Form.Label>IFSC Code</Form.Label>
+    <Form.Control
+      type="text"
+      placeholder="Enter IFSC code"
+      {...register('ifscCode', {
+        required: 'IFSC code is required',
+        pattern: {
+          value: /^[A-Z]{4}0[A-Z0-9]{6}$/,
+          message: 'Enter a valid IFSC code (e.g., HDFC0001234)'
+        }
+      })}
+    />
+    {errors.ifscCode && (
+      <small className="text-danger">{errors.ifscCode.message}</small>
+    )}
+  </Form.Group>
+</Col>
+
+         <Col md={6}>
+  <Form.Group className="mb-3">
+    <Form.Label>Bank Pass Book</Form.Label>
+    <Form.Control
+      type="file"
+      accept="image/*,application/pdf"
+      {...register('bankPassbook', {
+        required: 'Bank Pass Book is required',
+      })}
+    />
+    {errors.bankPassbook && (
+      <small className="text-danger">{errors.bankPassbook.message}</small>
+    )}
+  </Form.Group>
+</Col>
+         
+</Row>
 
       {/* Buttons */}
       <div className="d-flex justify-content-end mt-4">
@@ -329,4 +542,23 @@ function AddEmployeeForm({ onSave, onCancel }) {
 }
 
 export default AddEmployeeForm;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
