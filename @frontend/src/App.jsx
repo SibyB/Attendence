@@ -14,6 +14,7 @@ import FirstPage from './components/firstPage';
 import Employee from './components/Employee';
 import AddEmployeeForm from './components/AddEmployeeForm';
 import AddFormPage from './components/AddFormPage';
+import EditEmployee from './components/EditEmployee';
 // import Calender from './components/Calender';
 
 
@@ -31,6 +32,7 @@ const App = () => {
       <Route path="/employee" element={<Employee/>}/>
       <Route path="/addform" element={<AddEmployeeForm/>}/>
       <Route path='/page' element={<AddFormPage/>}/>
+      <Route path='/edit' element={<EditEmployee/>}/>
     </Routes>
     </BrowserRouter>
     </div>
