@@ -18,6 +18,7 @@ const SidebarContent = () => {
     { label: 'Salary',icon: IoPeopleSharp, items:['List','Add New'], to:['department','department']},
     { label: 'Attendence',icon: MdDashboard, items:['List','Add New'], to:['department','department']},
     { label: 'Settings',icon: MdDashboard, items:['List','Add New'], to:['department','department']},
+    { label: 'Logout',icon: MdDashboard, items:['List','Add New'], to:['department','department']},
     
     // ...
   ];

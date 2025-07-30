@@ -596,7 +596,7 @@ function AddEmployeeForm({ onSave, onCancel }) {
               accept="image/*"
               onChange={handleImageChange}
               isInvalid={!!errors.profileImage}
-              required
+              
             />
             <Form.Control.Feedback type="invalid">
               {errors.profileImage?.message}
