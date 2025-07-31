@@ -13,12 +13,12 @@ const SidebarContent = () => {
   const subMenus = [
     { label: 'Dashboard', icon: MdDashboard, items: ['Overview','Stats'], to: ['overview','stats'] },
     { label: 'Employees', icon: IoPeopleSharp, items: ['List','Add New'], to: ['employee','employee/add'] },
-    { label: 'Department',icon: IoPeopleSharp, items:['List','Add New'], to:['department','department']},
+    { label: 'Department',icon: MdDashboard, items:['List','Add New'], to:['department','department']},
     { label: 'Leaves',icon: IoPeopleSharp, items:['List','Add New'], to:['department','department']},
-    { label: 'Salary',icon: IoPeopleSharp, items:['List','Add New'], to:['department','department']},
-    { label: 'Attendence',icon: MdDashboard, items:['List','Add New'], to:['department','department']},
+    { label: 'Salary',icon: MdDashboard, items:['List','Add New'], to:['department','department']},
+    { label: 'Attendence',icon: IoPeopleSharp, items:['List','Add New'], to:['department','department']},
     { label: 'Settings',icon: MdDashboard, items:['List','Add New'], to:['department','department']},
-    { label: 'Help',icon: MdDashboard, items:['List','Add New'], to:['department','department']},
+    { label: 'Help',icon: IoPeopleSharp, items:['List','Add New'], to:['department','department']},
     { label: 'Logout',icon: MdDashboard, items:['List','Add New'], to:['department','department']},
     // ...
   ];
