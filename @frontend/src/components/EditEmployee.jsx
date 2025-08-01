@@ -333,27 +333,31 @@ import { Form, Button, Row, Col, Image } from 'react-bootstrap';
 //   };
 
 
-function EditEmployeeForm({ initialData, onSave, onCancel }) {
+function EditEmployeeForm({ initialData = null, onSave, onCancel }) {
   const [imagePreview, setImagePreview] = useState(initialData?.profileImage || null);
 
-  const { register, handleSubmit, reset, watch, formState: { errors, isDirty } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors, isDirty }
+  } = useForm({
     mode: 'onChange',
+    reValidateMode: 'onChange',
     defaultValues: initialData || {}
   });
 
+  // Reset and repopulate when initialData changes
   useEffect(() => {
-    if (initialData) {
-      reset(initialData);
-      setImagePreview(initialData.profileImage || null);
-    } else {
-      reset({});
-      setImagePreview(null);
-    }
-  }, [initialData, reset]);
+    reset(initialData || {});
+    setImagePreview(initialData?.profileImage || null);
+  }, [initialData, reset]); // settings recommended to load async data properly :contentReference[oaicite:1]{index=1}
 
+  // Observe image file input and preview when changed
   const watchedFile = watch('profileImageFile');
   useEffect(() => {
-    if (watchedFile && watchedFile.length > 0 && watchedFile[0] instanceof File) {
+    if (watchedFile?.[0] instanceof File) {
       const reader = new FileReader();
       reader.onloadend = () => setImagePreview(reader.result);
       reader.readAsDataURL(watchedFile[0]);
@@ -362,18 +366,22 @@ function EditEmployeeForm({ initialData, onSave, onCancel }) {
 
   const onSubmit = data => {
     const file = data.profileImageFile?.[0];
-    const finalImage = file ? imagePreview : (initialData?.profileImage || null);
+    const finalImage = file ? imagePreview : initialData?.profileImage || null;
 
-    const payload = { ...initialData, ...data, profileImage: finalImage };
+    const payload = {
+      ...initialData,
+      ...data,
+      profileImage: finalImage
+    };
     delete payload.profileImageFile;
 
     onSave && onSave(payload);
 
-    setTimeout(() => {
-      reset(initialData || {});
-      setImagePreview(initialData?.profileImage || null);
-    });
+    // reset form back to original state after save
+    reset(initialData || {});
+    setImagePreview(initialData?.profileImage || null);
   };
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className="p-4 border rounded shadow-sm bg-white">
       <h4 className="mb-4 text-center">{initialData ? 'Edit Employee' : 'Create Employee'}</h4>
@@ -605,11 +613,17 @@ function EditEmployeeForm({ initialData, onSave, onCancel }) {
         </Col>
       </Row>
 
-      <div className="d-flex justify-content-end mt-4">
+      {/* <div className="d-flex justify-content-end mt-4">
         <Button variant="secondary" className="me-2" onClick={onCancel}>
           Cancel
         </Button>
         <Button variant="primary" type="submit" disabled={initialData && !isDirty}>
+          {initialData ? 'Update' : 'Save'}
+        </Button>
+      </div> */}
+       <div className="d-flex justify-content-end mt-4">
+        <Button variant="secondary" onClick={onCancel}>Cancel</Button>
+        <Button variant="primary" type="submit" disabled={initialData && !isDirty} className="ms-2">
           {initialData ? 'Update' : 'Save'}
         </Button>
       </div>
