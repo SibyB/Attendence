@@ -277,23 +277,3 @@ function AddEmployeeForm({ onSave, onCancel }) {
 }
 
 export default AddEmployeeForm;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
